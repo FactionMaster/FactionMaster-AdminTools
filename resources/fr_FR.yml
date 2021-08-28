@@ -1,6 +1,40 @@
-SELECT_PLAYER_PANEL_TITLE: "Veuiller choisir le joueur"
-SELECT_PLAYER_PANEL_CONTENT: "Choisissez parmi la liste déroulante"
-SELECT_PLAYER_PANEL_ERROR: " §c>> §4Aucune correspondance n'a été trouvé avec le pseudo : {{needle}}"
-SELECT_FACTION_PANEL_TITLE: "Veuiller choisir la faction"
-SELECT_FACTION_PANEL_CONTENT: "Choisissez parmi la liste déroulante"
-SELECT_FACTION_PANEL_ERROR: " §c>> §4Aucune correspondance n'a été trouvé avec le nom : {{needle}}"
+MAIN_ADMIN_TOOLS_PANEL_TITLE: "Menu admin"
+
+BUTTON_MAIN_ADMIN_TOOLS: "Menu admin"
+BUTTON_ADMIN_TOOLS_DELETE_FACTION: "Supprimer une faction"
+BUTTON_ADMIN_TOOLS_DELETE_INVITATION: "Supprimer une invitation"
+BUTTON_ADMIN_TOOLS_DELETE_HOME: "Supprimer un home"
+BUTTON_ADMIN_TOOLS_DELETE_CLAIM: "Supprimer un claim"
+BUTTON_ADMIN_TOOLS_UPDATE_FACTION: "Offrir une récompense"
+
+ADMIN_TOOLS_INSTRUCTION: "Entrer la valeur demandé, entrer un champs vide pour revenir en arrière"
+
+ADMIN_TOOLS_DELETE__FACTION_PLACEHOLDER: "faction à supprimer"
+ADMIN_TOOLS_DELETE__FACTION_SUCCESS: " §a>> §2La faction {{factionName}} a bien été supprimé de force"
+
+ADMIN_TOOLS_DELETE_INVITATION_INFORMATION: "Veuiller à rentrer le pseudo ou le nom de la faction qui a envoyé l'invitation"
+ADMIN_TOOLS_DELETE_INVITATION_PLACEHOLDER: "Pseudo ou nom de la faction"
+ADMIN_TOOLS_DELETE_INVITATION_SUCCESS: " §a>> §2L'invitation envoyé par {{targetName}} a bien été supprimé de force"
+ADMIN_TOOLS_DELETE_INVITATION_MEMBER: "Invitation membre"
+ADMIN_TOOLS_DELETE_INVITATION_ALLIANCE: "Invitation alliance"
+INVITATION_DONT_EXIST: " §c>> §4Aucune invitation ne correspond avec ce champs renseigné"
+
+ADMIN_TOOLS_DELETE_HOME_PLACEHOLDER: "Nom de la faction"
+ADMIN_TOOLS_SELECT_HOME_TITLE: "Sélections du home"
+ADMIN_TOOLS_SELECT_HOME_INFORMATION: "Choisir le home à supprimer parmi la liste déroulante"
+ADMIN_TOOLS_SELECT_HOME_ERROR: " §c>> §4Aucun home n'a été défini par cette faction, envoyer pour revenir au menu principal"
+ADMIN_TOOLS_SELECT_HOME_SUCCESS: " §a>> §2Le home {{homeName}} de la faction {{factionName}} a bien été supprimé"
+
+ADMIN_TOOLS_UPDATE_FACTION_PLACEHOLDER: "Nom de la faction"
+ADMIN_TOOLS_UPDATE_FACTION_TITLE: "Selection de la récompense"
+ADMIN_TOOLS_UPDATE_FACTION_INPUT_TITLE: "Valeur : "
+ADMIN_TOOLS_UPDATE_FACTION_INPUT_PLACEHOLDER: "Valeur"
+ADMIN_TOOLS_UPDATE_FACTION_INFORMATION: "Veuillez choisir la récompense à offrir dans la liste déroulante"
+ADMIN_TOOLS_UPDATE_FACTION_SUCCESS: " §a>> §2La récompense '{{rewardName}}' a bien été offert à la faction {{factionName}}"
+
+ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER: "Nom de la faction"
+ADMIN_TOOLS_DELETE_CLAIM_TITLE: "Selection du claim"
+ADMIN_TOOLS_DELETE_CLAIM_INFORMATION: "Veuillez choisir le claim à supprimer"
+ADMIN_TOOLS_DELETE_CLAIM_SUCCESS: " §a>> §2Le claim a bien été supprimé"
+ADMIN_TOOLS_DELETE_CLAIM_ERROR: " §c>> §4Aucun claim n'a été trouvé pour la faction rentrée, vérifier l'orthographe de la faction ou bien celle-ci n'a aucun claim à son actif"
+

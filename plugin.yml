@@ -1,7 +1,23 @@
-name: FactionMasterInvitationImprove
+name: FactionMasterAdminTools
 author: ShockedPlot7560
 version: 1.0.1
 api: 3.17.7
-main: ShockedPlot7560\FactionMasterInvitationImprove\Main
+main: ShockedPlot7560\FactionMasterAdminTools\Main
 softdepend: [FactionMaster]
-description: "Extension which improve invitation system of FactionMaster"
+description: "Extension which add an administration gestion"
+permissions:
+  factionmaster.admin.faction.delete:
+    description: "Allow the player to delete any faction via the admin tool"
+    default: "op"
+  factionmaster.admin.invitation.delete:
+    description: "Allow the player to delete any invitation via the admin tool"
+    default: "op"
+  factionmaster.admin.home.delete:
+    description: "Allow the player to delete any faction's home via the admin tool"
+    default: "op"
+  factionmaster.admin.faction.update:
+    description: "Allow the player to give a reward to any faction via the admin tool"
+    default: "op"
+  factionmaster.admin.claim.delete:
+    description: "Allow the player to delete any claim via the admin tool"
+    default: "op"

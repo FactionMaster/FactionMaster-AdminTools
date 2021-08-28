@@ -30,29 +30,37 @@
  *
 */
 
-namespace ShockedPlot7560\FactionMasterInvitationImprove\Route;
+namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 
 use jojoe77777\FormAPI\CustomForm;
 use PDO;
 use pocketmine\Player;
 use ShockedPlot7560\FactionMaster\API\MainAPI;
+use ShockedPlot7560\FactionMaster\Database\Entity\ClaimEntity;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
-use ShockedPlot7560\FactionMaster\Database\Table\UserTable;
+use ShockedPlot7560\FactionMaster\Database\Table\ClaimTable;
 use ShockedPlot7560\FactionMaster\Route\Route;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
-use ShockedPlot7560\FactionMasterInvitationImprove\Main as FactionMasterInvitationImproveMain;
+use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
-class SelectPlayer implements Route {
+class ClaimSelect implements Route {
 
-    const SLUG = "selectPlayer";
+    const SLUG = "selectClaim";
 
-    public $PermissionNeed = [];
+    public $PermissionNeed = [
+        [
+            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+            PermissionConstant::DELETE_CLAIM_PERMISSION
+        ]
+    ];
     public $callable;
     public $backMenu;
     /** @var bool */
     private $menuActive = false;
     private $options = [];
+    private $optionsBis = [];
+    private $factionName;
 
     public function getSlug(): string
     {
@@ -65,11 +73,12 @@ class SelectPlayer implements Route {
      */
     public function __invoke(Player $player, UserEntity $User, array $UserPermissions, ?array $params = null) {
         $this->UserEntity = $User;
-        if (isset($params[0]) && \is_string($params[0])) $playerName = $params[0];
+        if (isset($params[0]) && \is_string($params[0])) $factionName = $params[0];
         if (isset($params[1]) && is_callable($params[1])) $this->callable = $params[1];
         if (isset($params[2]) && \is_string($params[2])) $this->backMenu = $params[2];
         if (isset($params[0]) && $params[0] == "") return Utils::processMenu(RouterFactory::get($this->backMenu), $player);
-        $menu = $this->createSelectMenu($playerName);
+        $menu = $this->createSelectMenu($factionName);
+        $this->factionName = $factionName;
         $player->sendForm($menu);
     }
 
@@ -79,30 +88,32 @@ class SelectPlayer implements Route {
         return function (Player $Player, $data) use ($backMenu, $callable) {
             if ($data === null || !isset($backMenu) || !isset($callable)) return;
             if (!$this->menuActive) return Utils::processMenu(RouterFactory::get($backMenu), $Player);
-            call_user_func($callable, $this->options[$data[0]]);
+            call_user_func($callable, $this->factionName, $this->optionsBis[$data[0]]->id);
         };
     }
 
-    private function createSelectMenu(string $playerName): CustomForm {
+    private function createSelectMenu(string $factionName): CustomForm {
         $menu = new CustomForm($this->call());
-        $menu->setTitle(Utils::getText($this->UserEntity->name, "SELECT_PLAYER_PANEL_TITLE"));
-        $query = MainAPI::$PDO->prepare("SELECT * FROM " . UserTable::TABLE_NAME . " WHERE INSTR(name, :needle) > 0 AND name != :playerName LIMIT " . FactionMasterInvitationImproveMain::getConfigF("limit-selected-player"));
-        $query->execute([
-            "needle" => $playerName,
-            "playerName" => $this->UserEntity->name
-        ]);
+        $menu->setTitle(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_TITLE"));
         $this->options = [];
-        foreach ($query->fetchAll(PDO::FETCH_CLASS, UserEntity::class) as $user) {
-            $this->options[] = $user->name;
+        $this->optionsBis = [];
+        foreach (MainAPI::getClaimsFaction($factionName) as $claim) {
+            $this->options[] = $claim;
+            $data = explode("|", $claim);
+            $query = MainAPI::$PDO->prepare("SELECT * FROM " . ClaimTable::TABLE_NAME . " WHERE x = :x AND z = :z AND world = :world");
+            $query->execute([
+                "x" => $data[0],
+                "z" => $data[1],
+                "world" => $data[2]
+            ]);
+            $result = $query->fetchAll(PDO::FETCH_CLASS, ClaimEntity::class);
+            if (isset($result[0])) $this->optionsBis[] = $result[0];
         }
-        if (MainAPI::getUser($playerName) instanceof UserEntity) $this->options[] = $playerName;
         if (count($this->options) != 0) {
-            $menu->addDropdown(Utils::getText($this->UserEntity->name, "SELECT_PLAYER_PANEL_CONTENT"), $this->options);
+            $menu->addDropdown(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_INFORMATION"), $this->options);
             $this->menuActive = true;
         }else{
-            $menu->addLabel(Utils::getText($this->UserEntity->name, "SELECT_PLAYER_PANEL_ERROR", [
-                "needle" => $playerName
-            ]));
+            $menu->addLabel(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_ERROR"));
         }
         return $menu;
     }
