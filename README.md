@@ -1,7 +1,8 @@
-# FactionMaster Invitation improve system
+# FactionMaster AdminTools
 ###### FactionMaster extension, the faction plugin extensible and modulable to your way
 **OFFICIAL** extension, this extension have been tested by the FactionMaster's owner.
 
-It will display a new window where you can choose between a list corresponding to your input.
-This works with players and factions registered on the server!
-![Panel Example](.github/panel_example.PNG?raw=true)
+It will add an administration tools to manage your server
+
+## Adding functionality
+To propose a new functionality, to want to open a new way out, to discuss it later
