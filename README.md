@@ -5,4 +5,4 @@
 It will add an administration tools to manage your server
 
 ## Adding functionality
-To propose a new functionality, to want to open a new way out, to discuss it later
+To propose a new functionality, open an issue, to discuss it later
