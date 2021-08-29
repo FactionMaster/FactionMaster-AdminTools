@@ -51,10 +51,10 @@ class UpdateFaction extends Button {
             function (Player $Player) {
                 Utils::processMenu(RouterFactory::get(UpdateFactionSelect::SLUG), $Player);
             },
-            [
+            [[
                 Utils::POCKETMINE_PERMISSIONS_CONSTANT,
                 PermissionConstant::UPDATE_FACTION_PERMISSION
-            ]
+            ]]
         );
     }
 }

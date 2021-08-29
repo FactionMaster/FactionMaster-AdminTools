@@ -51,10 +51,10 @@ class DeleteFaction extends Button {
             function (Player $Player) {
                 Utils::processMenu(RouterFactory::get(RouteDeleteFaction::SLUG), $Player);
             },
-            [
+            [[
                 Utils::POCKETMINE_PERMISSIONS_CONSTANT,
                 PermissionConstant::DELETE_FACTION_PERMISSION
-            ]
+            ]]
         );
     }
 }

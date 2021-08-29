@@ -51,10 +51,10 @@ class DeleteInvitation extends Button {
             function (Player $Player) {
                 Utils::processMenu(RouterFactory::get(RouteDeleteInvitation::SLUG), $Player);
             },
-            [
+            [[
                 Utils::POCKETMINE_PERMISSIONS_CONSTANT,
                 PermissionConstant::DELETE_INVITATION_PERMISSION
-            ]
+            ]]
         );
     }
 }

@@ -98,6 +98,18 @@ class Main extends PluginBase implements Extension, PermissionConstant{
                         [
                             Utils::POCKETMINE_PERMISSIONS_CONSTANT,
                             self::DELETE_FACTION_PERMISSION
+                        ],[
+                            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+                            self::DELETE_CLAIM_PERMISSION
+                        ],[
+                            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+                            self::DELETE_HOME_PERMISSION
+                        ],[
+                            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+                            self::DELETE_INVITATION_PERMISSION
+                        ],[
+                            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+                            self::UPDATE_FACTION_PERMISSION
                         ]
                     ]
                 ), 0);

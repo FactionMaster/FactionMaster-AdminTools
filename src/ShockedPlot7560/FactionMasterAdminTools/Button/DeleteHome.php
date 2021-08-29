@@ -51,10 +51,10 @@ class DeleteHome extends Button {
             function (Player $Player) {
                 Utils::processMenu(RouterFactory::get(RouteDeleteHome::SLUG), $Player);
             },
-            [
+            [[
                 Utils::POCKETMINE_PERMISSIONS_CONSTANT,
                 PermissionConstant::DELETE_HOME_PERMISSION
-            ]
+            ]]
         );
     }
 }

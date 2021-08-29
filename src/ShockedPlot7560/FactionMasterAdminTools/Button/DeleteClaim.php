@@ -51,10 +51,10 @@ class DeleteClaim extends Button {
             function (Player $Player) {
                 Utils::processMenu(RouterFactory::get(RouteDeleteClaim::SLUG), $Player);
             },
-            [
+            [[
                 Utils::POCKETMINE_PERMISSIONS_CONSTANT,
                 PermissionConstant::DELETE_CLAIM_PERMISSION
-            ]
+            ]]
         );
     }
 }
