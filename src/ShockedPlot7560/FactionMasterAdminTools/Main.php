@@ -68,6 +68,7 @@ class Main extends PluginBase implements Extension, PermissionConstant{
         @mkdir($this->getDataFolder());
         $this->saveDefaultConfig();
         $this->saveResource('fr_FR.yml');
+        $this->saveResource('en_EN.yml');
         $this->saveResource('config.yml');
         $this->config = new Config($this->getDataFolder() . "config.yml");
         $this->LangConfig = [
