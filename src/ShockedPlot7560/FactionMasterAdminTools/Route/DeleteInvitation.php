@@ -40,6 +40,7 @@ use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\Event\InvitationDeleteEvent;
 use ShockedPlot7560\FactionMaster\Route\Route;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
+use ShockedPlot7560\FactionMaster\Task\MenuSendTask;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
@@ -83,13 +84,20 @@ class DeleteInvitation implements Route {
             if ($data[2] !== "") {
                 if (isset($Invitation[0]) && $Invitation[0] instanceof InvitationEntity) {
                     $Invitation = $Invitation[0];
-                    if (MainAPI::removeInvitation($Invitation->sender, $Invitation->receiver, $Invitation->type)) {
-                        (new InvitationDeleteEvent($Player, $Invitation, true))->call();
-                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_INVITATION_SUCCESS", ["targetName" => $Invitation->sender])]);
-                    }else{
-                        $menu = $this->mainMenu(Utils::getText($this->UserEntity->name, "ERROR"));
-                        $Player->sendForm($menu);
-                    }
+                    $UserEntity = $this->UserEntity;
+                    MainAPI::removeInvitation($Invitation->sender, $Invitation->receiver, $Invitation->type);
+                    Utils::newMenuSendTask(new MenuSendTask(
+                        function () use ($Invitation) {
+                            return !MainAPI::getInvitationsBySender($Invitation->sender, $Invitation->type) instanceof InvitationEntity;
+                        },
+                        function () use ($Player, $UserEntity, $Invitation) {
+                            (new InvitationDeleteEvent($Player, $Invitation, true))->call();
+                            Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ADMIN_TOOLS_DELETE_INVITATION_SUCCESS", ["targetName" => $Invitation->sender])]);
+                        },
+                        function () use ($Player, $UserEntity) {
+                            Utils::processMenu(RouterFactory::get(self::SLUG), $Player, [Utils::getText($UserEntity->name, "ERROR")]);
+                        }
+                    ));
                 }else{
                     $menu = $this->mainMenu(Utils::getText($this->UserEntity->name, "INVITATION_DONT_EXIST"));
                     $Player->sendForm($menu);

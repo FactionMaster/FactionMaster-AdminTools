@@ -98,16 +98,8 @@ class ClaimSelect implements Route {
         $this->options = [];
         $this->optionsBis = [];
         foreach (MainAPI::getClaimsFaction($factionName) as $claim) {
-            $this->options[] = $claim;
-            $data = explode("|", $claim);
-            $query = MainAPI::$PDO->prepare("SELECT * FROM " . ClaimTable::TABLE_NAME . " WHERE x = :x AND z = :z AND world = :world");
-            $query->execute([
-                "x" => $data[0],
-                "z" => $data[1],
-                "world" => $data[2]
-            ]);
-            $result = $query->fetchAll(PDO::FETCH_CLASS, ClaimEntity::class);
-            if (isset($result[0])) $this->optionsBis[] = $result[0];
+            $this->optionsBis[] = $claim;
+            $this->options[] = $claim->getToString();
         }
         if (count($this->options) != 0) {
             $menu->addDropdown(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_INFORMATION"), $this->options);

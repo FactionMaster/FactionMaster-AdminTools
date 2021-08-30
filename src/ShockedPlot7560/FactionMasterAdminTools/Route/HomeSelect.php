@@ -35,6 +35,7 @@ namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\Player;
 use ShockedPlot7560\FactionMaster\API\MainAPI;
+use ShockedPlot7560\FactionMaster\Database\Entity\HomeEntity;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\Route\Route;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
@@ -95,7 +96,7 @@ class HomeSelect implements Route {
         $this->options = [];
         $this->optionsBis = [];
         foreach (MainAPI::getFactionHomes($factionName) as $name => $home) {
-            $this->options[] = $name . "(" .Utils::homeToString($home["x"], $home["y"], $home["z"], $home["world"]) . ")";
+            $this->options[] = $name . "(" . $home->getToString() . ")";
             $this->optionsBis[] = $name;
         }
         if (count($this->options) != 0) {

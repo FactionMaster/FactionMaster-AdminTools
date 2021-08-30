@@ -40,6 +40,7 @@ use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\Event\FactionDeleteEvent;
 use ShockedPlot7560\FactionMaster\Route\Route;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
+use ShockedPlot7560\FactionMaster\Task\MenuSendTask;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
@@ -77,13 +78,20 @@ class DeleteFaction implements Route {
             $FactionRequest = MainAPI::getFaction($data[1]);
             if ($data[1] !== "") {
                 if ($FactionRequest instanceof FactionEntity) {
-                    if (MainAPI::removeFaction($FactionRequest->name)) {
-                        (new FactionDeleteEvent($Player, $FactionRequest, true))->call();
-                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE__FACTION_SUCCESS", ["factionName" => $FactionRequest->name])]);
-                    }else{
-                        $menu = $this->mainMenu(Utils::getText($this->UserEntity->name, "ERROR"));
-                        $Player->sendForm($menu);
-                    }
+                    MainAPI::removeFaction($FactionRequest->name);
+                    $UserEntity = $this->UserEntity;
+                    Utils::newMenuSendTask(new MenuSendTask(
+                        function () use ($FactionRequest) {
+                            return !MainAPI::getFaction($FactionRequest->name) instanceof FactionEntity;
+                        },
+                        function () use ($Player, $FactionRequest, $UserEntity) {
+                            (new FactionDeleteEvent($Player, $FactionRequest, true))->call();
+                            Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ADMIN_TOOLS_DELETE__FACTION_SUCCESS", ["factionName" => $FactionRequest->name])]);
+                        },
+                        function () use ($Player, $UserEntity) {
+                            Utils::processMenu(RouterFactory::get(self::SLUG), $Player, [Utils::getText($UserEntity->name, "ERROR")]);
+                        }
+                    ));
                 }else{
                     $menu = $this->mainMenu(Utils::getText($this->UserEntity->name, "FACTION_DONT_EXIST"));
                     $Player->sendForm($menu);

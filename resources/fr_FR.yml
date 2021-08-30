@@ -36,5 +36,5 @@ ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER: "Nom de la faction"
 ADMIN_TOOLS_DELETE_CLAIM_TITLE: "Selection du claim"
 ADMIN_TOOLS_DELETE_CLAIM_INFORMATION: "Veuillez choisir le claim à supprimer"
 ADMIN_TOOLS_DELETE_CLAIM_SUCCESS: " §a>> §2Le claim a bien été supprimé"
-ADMIN_TOOLS_DELETE_CLAIM_ERROR: " §c>> §4Aucun claim n'a été trouvé pour la faction rentrée, vérifier l'orthographe de la faction ou bien celle-ci n'a aucun claim à son actif"
+ADMIN_TOOLS_DELETE_CLAIM_ERROR: " §c>> §4Aucun claim n'a été trouvé pour la faction rentrée, vérifier l'orthographe de la faction ou bien celle-ci n'a aucun claim à son actif§r"
 

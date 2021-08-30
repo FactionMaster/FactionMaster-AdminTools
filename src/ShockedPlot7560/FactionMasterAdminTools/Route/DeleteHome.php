@@ -35,10 +35,12 @@ namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\Player;
 use ShockedPlot7560\FactionMaster\API\MainAPI;
+use ShockedPlot7560\FactionMaster\Database\Entity\HomeEntity;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\Event\FactionHomeDeleteEvent;
 use ShockedPlot7560\FactionMaster\Route\Route;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
+use ShockedPlot7560\FactionMaster\Task\MenuSendTask;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
@@ -76,12 +78,20 @@ class DeleteHome implements Route {
             return Utils::processMenu(RouterFactory::get(HomeSelect::SLUG), $Player, [
                 $data[1],
                 function (string $factionName, string $homeName) use ($Player) {
-                    if (MainAPI::removeHome($factionName, $homeName)) {
-                        (new FactionHomeDeleteEvent($Player, $Player->getName(), $factionName, true))->call();
-                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_HOME_SUCCESS", ['homeName' => $homeName, "factionName" => $factionName])] );
-                    }else{
-                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ERROR")]);
-                    }
+                    MainAPI::removeHome($factionName, $homeName);
+                    $UserEntity = $this->UserEntity;
+                    Utils::newMenuSendTask(new MenuSendTask(
+                        function () use ($factionName, $homeName) {
+                            return !MainAPI::getFactionHome($factionName, $homeName) instanceof HomeEntity;
+                        },
+                        function () use ($Player, $UserEntity, $factionName, $homeName) {
+                            (new FactionHomeDeleteEvent($Player, $Player->getName(), $factionName, true))->call();
+                            Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ADMIN_TOOLS_SELECT_HOME_SUCCESS", ['homeName' => $homeName, "factionName" => $factionName])] );
+                        },
+                        function () use ($Player, $UserEntity) {
+                            Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ERROR")]);
+                        }
+                    ));
                 },
                 AdminToolsMain::SLUG
             ]);

@@ -37,8 +37,11 @@ use pocketmine\Player;
 use ShockedPlot7560\FactionMaster\API\MainAPI;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\Database\Table\ClaimTable;
+use ShockedPlot7560\FactionMaster\Main;
 use ShockedPlot7560\FactionMaster\Route\Route;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
+use ShockedPlot7560\FactionMaster\Task\DatabaseTask;
+use ShockedPlot7560\FactionMaster\Task\MenuSendTask;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
@@ -73,15 +76,37 @@ class DeleteClaim implements Route {
     public function call() : callable{
         return function (Player $Player, $data) {
             if ($data === null) return;
+            $UserEntity = $this->UserEntity;
             return Utils::processMenu(RouterFactory::get(ClaimSelect::SLUG), $Player, [
                 $data[1],
-                function (string $factionName, int $factionClaim) use ($Player) {
-                    $query = MainAPI::$PDO->prepare("DELETE FROM " . ClaimTable::TABLE_NAME . " WHERE id = :id");
-                    if ($query->execute(["id" => $factionClaim])) {
-                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_SUCCESS")] );
-                    }else{
-                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ERROR")]);
-                    }
+                function (string $factionName, int $factionClaim) use ($Player, $UserEntity) {
+                    Main::getInstance()->getServer()->getAsyncPool()->submitTask(
+                        new DatabaseTask(
+                            "DELETE FROM " . ClaimTable::TABLE_NAME . " WHERE id = :id",
+                            ["id" => $factionClaim],
+                            function () use ($factionClaim, $factionName, $Player, $UserEntity) {
+                                foreach (MainAPI::$claim[$factionName] as $key => $claim) {
+                                    if ($claim->id == $factionClaim) {
+                                        unset(MainAPI::$claim[$factionName][$key]);
+                                    }
+                                }
+                                Utils::newMenuSendTask(new MenuSendTask(
+                                    function () use ($factionName, $factionClaim) {
+                                        foreach (MainAPI::getClaimsFaction($factionName) as $claim) {
+                                            if ($claim->id == $factionClaim) return false;
+                                        }
+                                        return true;
+                                    },
+                                    function () use ($Player, $UserEntity) {
+                                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_SUCCESS")] );
+                                    },
+                                    function () use ($Player, $UserEntity) {
+                                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ERROR")]);
+                                    }
+                                ));
+                            }
+                        )
+                    );
                 },
                 AdminToolsMain::SLUG
             ]);
@@ -90,7 +115,7 @@ class DeleteClaim implements Route {
 
     private function mainMenu(string $message = "") : CustomForm {
         $menu = new CustomForm($this->call());
-        $menu->addLabel($message);
+        $menu->addLabel(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_INFORMATION") . "\n" .$message);
         $menu->addInput(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_INSTRUCTION"), Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER"));
         return $menu;
     }

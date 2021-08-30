@@ -36,5 +36,5 @@ ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER: "Name of the faction"
 ADMIN_TOOLS_DELETE_CLAIM_TITLE: "Claim selection"
 ADMIN_TOOLS_DELETE_CLAIM_INFORMATION: "Please select the claim to be deleted"
 ADMIN_TOOLS_DELETE_CLAIM_SUCCESS: " §a>> §2The claim has been deleted"
-ADMIN_TOOLS_DELETE_CLAIM_ERROR: " §c>> §4No claim has been found for the faction entered, check the spelling of the faction or it has no claims"
+ADMIN_TOOLS_DELETE_CLAIM_ERROR: " §c>> §4No claim has been found for the faction entered, check the spelling of the faction or it has no claims§r"
 

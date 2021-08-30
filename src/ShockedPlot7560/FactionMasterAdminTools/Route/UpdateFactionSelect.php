@@ -77,11 +77,8 @@ class UpdateFactionSelect implements Route {
             return Utils::processMenu(RouterFactory::get(UpdateFaction::SLUG), $Player, [
                 $data[1],
                 function (string $factionName, RewardInterface $reward, $value) use ($Player) {
-                    if ($reward->executeGet($factionName, $value)) {
-                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_UPDATE_FACTION_SUCCESS", ['rewardName' => Utils::getText($Player->getName(), $reward->getName($Player->getName())), "factionName" => $factionName])] );
-                    }else{
-                        Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ERROR")]);
-                    }
+                    $reward->executeGet($factionName, $value);
+                    Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_UPDATE_FACTION_SUCCESS", ['rewardName' => Utils::getText($Player->getName(), $reward->getName($Player->getName())), "factionName" => $factionName])] );
                 },
                 AdminToolsMain::SLUG
             ]);
