@@ -34,7 +34,6 @@ namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\Player;
-use ShockedPlot7560\FactionMaster\API\MainAPI;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\Reward\RewardFactory;
 use ShockedPlot7560\FactionMaster\Reward\RewardInterface;
