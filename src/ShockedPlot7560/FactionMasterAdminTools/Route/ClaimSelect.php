@@ -49,6 +49,10 @@ class ClaimSelect implements Route {
         [
             Utils::POCKETMINE_PERMISSIONS_CONSTANT,
             PermissionConstant::DELETE_CLAIM_PERMISSION
+        ],
+        [
+            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+            PermissionConstant::TP_CLAIM_PERMISSION
         ]
     ];
     public $callable;
@@ -91,7 +95,7 @@ class ClaimSelect implements Route {
 
     private function createSelectMenu(string $factionName): CustomForm {
         $menu = new CustomForm($this->call());
-        $menu->setTitle(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_TITLE"));
+        $menu->setTitle(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_CLAIM_TITLE"));
         $this->options = [];
         $this->optionsBis = [];
         foreach (MainAPI::getClaimsFaction($factionName) as $claim) {
@@ -99,10 +103,10 @@ class ClaimSelect implements Route {
             $this->options[] = $claim->getToString();
         }
         if (count($this->options) != 0) {
-            $menu->addDropdown(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_INFORMATION"), $this->options);
+            $menu->addDropdown(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_CLAIM_INFORMATION"), $this->options);
             $this->menuActive = true;
         }else{
-            $menu->addLabel(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_ERROR"));
+            $menu->addLabel(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_CLAIM_ERROR"));
         }
         return $menu;
     }

@@ -49,6 +49,10 @@ class HomeSelect implements Route {
         [
             Utils::POCKETMINE_PERMISSIONS_CONSTANT,
             PermissionConstant::DELETE_HOME_PERMISSION
+        ],
+        [
+            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+            PermissionConstant::TP_HOME_PERMISSION
         ]
     ];
     public $callable;
@@ -99,7 +103,7 @@ class HomeSelect implements Route {
             $this->optionsBis[] = $name;
         }
         if (count($this->options) != 0) {
-            $menu->addDropdown(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_HOME_PLACEHOLDER"), $this->options);
+            $menu->addDropdown(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_HOME_INFORMATION"), $this->options);
             $this->menuActive = true;
         }else{
             $menu->addLabel(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_HOME_ERROR"));

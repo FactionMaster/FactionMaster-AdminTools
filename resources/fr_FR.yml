@@ -4,6 +4,8 @@ BUTTON_MAIN_ADMIN_TOOLS: "Menu admin"
 BUTTON_ADMIN_TOOLS_DELETE_FACTION: "Supprimer une faction"
 BUTTON_ADMIN_TOOLS_DELETE_INVITATION: "Supprimer une invitation"
 BUTTON_ADMIN_TOOLS_DELETE_HOME: "Supprimer un home"
+BUTTON_ADMIN_TOOLS_TP_HOME: "Se tp à un home"
+BUTTON_ADMIN_TOOLS_TP_CLAIM: "Se tp à un claim"
 BUTTON_ADMIN_TOOLS_DELETE_CLAIM: "Supprimer un claim"
 BUTTON_ADMIN_TOOLS_UPDATE_FACTION: "Offrir une récompense"
 
@@ -20,10 +22,14 @@ ADMIN_TOOLS_DELETE_INVITATION_ALLIANCE: "Invitation alliance"
 INVITATION_DONT_EXIST: " §c>> §4Aucune invitation ne correspond avec ce champs renseigné"
 
 ADMIN_TOOLS_DELETE_HOME_PLACEHOLDER: "Nom de la faction"
+ADMIN_TOOLS_DELETE_HOME_SUCCESS: " §a>> §2Le home {{homeName}} de la faction {{factionName}} a bien été supprimé"
+
 ADMIN_TOOLS_SELECT_HOME_TITLE: "Sélections du home"
-ADMIN_TOOLS_SELECT_HOME_INFORMATION: "Choisir le home à supprimer parmi la liste déroulante"
+ADMIN_TOOLS_SELECT_HOME_INFORMATION: "Choisir le home à utiliser parmi la liste déroulante"
 ADMIN_TOOLS_SELECT_HOME_ERROR: " §c>> §4Aucun home n'a été défini par cette faction, envoyer pour revenir au menu principal"
-ADMIN_TOOLS_SELECT_HOME_SUCCESS: " §a>> §2Le home {{homeName}} de la faction {{factionName}} a bien été supprimé"
+
+ADMIN_TOOLS_TP_HOME_PLACEHOLDER: "Nom de la faction"
+ADMIN_TOOLS_TP_HOME_SUCCESS: " §a>> §2Tp au home {{homeName}} de la faction {{factionName}} avec succès !"
 
 ADMIN_TOOLS_UPDATE_FACTION_PLACEHOLDER: "Nom de la faction"
 ADMIN_TOOLS_UPDATE_FACTION_TITLE: "Selection de la récompense"
@@ -33,8 +39,13 @@ ADMIN_TOOLS_UPDATE_FACTION_INFORMATION: "Veuillez choisir la récompense à offr
 ADMIN_TOOLS_UPDATE_FACTION_SUCCESS: " §a>> §2La récompense '{{rewardName}}' a bien été offert à la faction {{factionName}}"
 
 ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER: "Nom de la faction"
-ADMIN_TOOLS_DELETE_CLAIM_TITLE: "Selection du claim"
-ADMIN_TOOLS_DELETE_CLAIM_INFORMATION: "Veuillez choisir le claim à supprimer"
 ADMIN_TOOLS_DELETE_CLAIM_SUCCESS: " §a>> §2Le claim a bien été supprimé"
-ADMIN_TOOLS_DELETE_CLAIM_ERROR: " §c>> §4Aucun claim n'a été trouvé pour la faction rentrée, vérifier l'orthographe de la faction ou bien celle-ci n'a aucun claim à son actif§r"
 
+ADMIN_TOOLS_SELECT_CLAIM_TITLE: "Selection du claim"
+ADMIN_TOOLS_SELECT_CLAIM_INFORMATION: "Veuillez choisir le claim à supprimer"
+ADMIN_TOOLS_SELECT_CLAIM_ERROR: " §c>> §4Aucun claim n'a été trouvé pour la faction rentrée, vérifier l'orthographe de la faction ou bien celle-ci n'a aucun claim à son actif§r"
+
+ADMIN_TOOLS_TP_HOME_PLACEHOLDER: "Nom de la faction"
+ADMIN_TOOLS_TP_HOME_SUCCESS: " §a>> §2Tp au claim de la faction {{factionName}} avec succès !"
+
+ADMIN_TOOLS_ERROR_LEVEL_NO_EXISTS: " §c>> §4Le monde n'existe pas"

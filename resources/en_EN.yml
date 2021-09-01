@@ -4,6 +4,8 @@ BUTTON_MAIN_ADMIN_TOOLS: "Admin menu"
 BUTTON_ADMIN_TOOLS_DELETE_FACTION: "Delete a faction"
 BUTTON_ADMIN_TOOLS_DELETE_INVITATION: "Delete an invitation"
 BUTTON_ADMIN_TOOLS_DELETE_HOME: "Delete a home"
+BUTTON_ADMIN_TOOLS_TP_HOME: "Tp to a home"
+BUTTON_ADMIN_TOOLS_TP_CLAIM: "Tp to a claim"
 BUTTON_ADMIN_TOOLS_DELETE_CLAIM: "Delete a claim"
 BUTTON_ADMIN_TOOLS_UPDATE_FACTION: "Offer a reward"
 
@@ -20,10 +22,14 @@ ADMIN_TOOLS_DELETE_INVITATION_ALLIANCE: "Alliance invitation"
 INVITATION_DONT_EXIST: " §c>> §4No invitation matches this field"
 
 ADMIN_TOOLS_DELETE_HOME_PLACEHOLDER: "Name of the faction"
+ADMIN_TOOLS_DELETE_HOME_SUCCESS: " §a>> §2The {{homeName}} home of the {{factionName}} faction has been deleted"
+
 ADMIN_TOOLS_SELECT_HOME_TITLE: "Home selection"
-ADMIN_TOOLS_SELECT_HOME_INFORMATION: "Choose the home to be deleted from the drop-down list"
+ADMIN_TOOLS_SELECT_HOME_INFORMATION: "Choose the home from the drop-down list"
 ADMIN_TOOLS_SELECT_HOME_ERROR: " §c>> §4No home has been defined by this faction, send to return to the main menu"
-ADMIN_TOOLS_SELECT_HOME_SUCCESS: " §a>> §2The {{homeName}} home of the {{factionName}} faction has been deleted"
+
+ADMIN_TOOLS_TP_HOME_PLACEHOLDER: "Name of the faction"
+ADMIN_TOOLS_TP_HOME_SUCCESS: " §a>> §2Teleport to {{homeName}} of the faction {{factionName}} with success !"
 
 ADMIN_TOOLS_UPDATE_FACTION_PLACEHOLDER: "Name of the faction"
 ADMIN_TOOLS_UPDATE_FACTION_TITLE: "Selection of the award"
@@ -33,8 +39,13 @@ ADMIN_TOOLS_UPDATE_FACTION_INFORMATION: "Please choose the reward to be offered 
 ADMIN_TOOLS_UPDATE_FACTION_SUCCESS: " §a>> §2The reward '{{rewardName}}' has been offered to the faction {{factionName}}"
 
 ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER: "Name of the faction"
-ADMIN_TOOLS_DELETE_CLAIM_TITLE: "Claim selection"
-ADMIN_TOOLS_DELETE_CLAIM_INFORMATION: "Please select the claim to be deleted"
 ADMIN_TOOLS_DELETE_CLAIM_SUCCESS: " §a>> §2The claim has been deleted"
-ADMIN_TOOLS_DELETE_CLAIM_ERROR: " §c>> §4No claim has been found for the faction entered, check the spelling of the faction or it has no claims§r"
 
+ADMIN_TOOLS_SELECT_CLAIM_TITLE: "Claim selection"
+ADMIN_TOOLS_SELECT_CLAIM_INFORMATION: "Please select the claim to be deleted"
+ADMIN_TOOLS_SELECT_CLAIM_ERROR: " §c>> §4No claim has been found for the faction entered, check the spelling of the faction or it has no claims§r"
+
+ADMIN_TOOLS_TP_HOME_PLACEHOLDER: "Name of the faction"
+ADMIN_TOOLS_TP_HOME_SUCCESS: " §a>> §2Teleport to the claaim of the faction {{factionName}} with success !"
+
+ADMIN_TOOLS_ERROR_LEVEL_NO_EXISTS: " §c>> §4This level doesn't exist"

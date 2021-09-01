@@ -41,6 +41,8 @@ use ShockedPlot7560\FactionMasterAdminTools\Button\DeleteClaim;
 use ShockedPlot7560\FactionMasterAdminTools\Button\DeleteFaction;
 use ShockedPlot7560\FactionMasterAdminTools\Button\DeleteHome;
 use ShockedPlot7560\FactionMasterAdminTools\Button\DeleteInvitation;
+use ShockedPlot7560\FactionMasterAdminTools\Button\TpClaim;
+use ShockedPlot7560\FactionMasterAdminTools\Button\TpHome;
 use ShockedPlot7560\FactionMasterAdminTools\Button\UpdateFaction;
 
 class AdminToolsMain extends Collection {
@@ -54,7 +56,9 @@ class AdminToolsMain extends Collection {
             $this->register(new DeleteFaction());
             $this->register(new DeleteInvitation());
             $this->register(new DeleteHome());
+            $this->register(new TpHome());
             $this->register(new DeleteClaim());
+            $this->register(new TpClaim());
             $this->register(new UpdateFaction());
             $this->register(new Back(MainPanel::SLUG));
         });

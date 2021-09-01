@@ -1,6 +1,6 @@
 name: FactionMasterAdminTools
 author: ShockedPlot7560
-version: 1.0.1
+version: 1.1.0-alpha
 api: 3.17.7
 main: ShockedPlot7560\FactionMasterAdminTools\Main
 softdepend: [FactionMaster]
@@ -20,4 +20,10 @@ permissions:
     default: "op"
   factionmaster.admin.claim.delete:
     description: "Allow the player to delete any claim via the admin tool"
+    default: "op"
+  factionmaster.admin.tp.home:
+    description: "Allow the player tp to any faction's home"
+    default: "op"
+  factionmaster.admin.tp.claim:
+    description: "Allow the player tp to any faction's claim"
     default: "op"

@@ -51,6 +51,8 @@ use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteFaction;
 use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteHome;
 use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteInvitation;
 use ShockedPlot7560\FactionMasterAdminTools\Route\HomeSelect;
+use ShockedPlot7560\FactionMasterAdminTools\Route\TpClaim;
+use ShockedPlot7560\FactionMasterAdminTools\Route\TpHome;
 use ShockedPlot7560\FactionMasterAdminTools\Route\UpdateFaction;
 use ShockedPlot7560\FactionMasterAdminTools\Route\UpdateFactionSelect;
 
@@ -110,6 +112,12 @@ class Main extends PluginBase implements Extension, PermissionConstant{
                         ],[
                             Utils::POCKETMINE_PERMISSIONS_CONSTANT,
                             self::UPDATE_FACTION_PERMISSION
+                        ],[
+                            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+                            self::TP_HOME_PERMISSION
+                        ],[
+                            Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+                            self::TP_CLAIM_PERMISSION
                         ]
                     ]
                 ), 0);
@@ -151,7 +159,9 @@ class Main extends PluginBase implements Extension, PermissionConstant{
             UpdateFaction::class,
             UpdateFactionSelect::class,
             ClaimSelect::class,
-            DeleteClaim::class
+            DeleteClaim::class,
+            TpHome::class,
+            TpClaim::class
         ];
         foreach ($routes as $route) {
             RouterFactory::registerRoute(new $route);
