@@ -32,63 +32,66 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 
-use jojoe77777\FormAPI\CustomForm;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
+use ShockedPlot7560\FactionMaster\libs\Vecnavium\FormsUI\CustomForm;
 use ShockedPlot7560\FactionMaster\Reward\RewardInterface;
 use ShockedPlot7560\FactionMaster\Route\Route;
+use ShockedPlot7560\FactionMaster\Route\RouteBase;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
-class UpdateFactionSelect implements Route {
+class UpdateFactionSelect extends RouteBase {
 	const SLUG = "updateFactionSelectPanel";
-
-	public $PermissionNeed = [
-		[
-			Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-			PermissionConstant::UPDATE_FACTION_PERMISSION
-		]
-	];
-
-	/** @var UserEntity */
-	private $UserEntity;
 
 	public function getSlug(): string {
 		return self::SLUG;
 	}
 
-	public function __invoke(Player $Player, UserEntity $User, array $UserPermissions, ?array $params = null) {
-		$this->UserEntity = $User;
-		$message = '';
-		if (isset($params[0])) {
-			$message = $params[0];
-		}
+	public function getPermissions(): array {
+		return [
+			[
+				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+				PermissionConstant::UPDATE_FACTION_PERMISSION
+			]
+		];
+	}
 
-		$menu = $this->mainMenu($message);
-		$Player->sendForm($menu);
+	public function getBackRoute(): ?Route {
+		return RouterFactory::get(AdminToolsMain::SLUG);
+	}
+
+	public function __invoke(Player $player, UserEntity $userEntity, array $userPermissions, ?array $params = null) {
+		$this->init($player, $userEntity, $userPermissions, $params);
+		$message = $params[0] ?? "";
+		$player->sendForm($this->getForm($message));
 	}
 
 	public function call() : callable {
-		return function (Player $Player, $data) {
+		return function (Player $player, $data) {
 			if ($data === null) {
 				return;
 			}
-			return Utils::processMenu(RouterFactory::get(UpdateFaction::SLUG), $Player, [
+			return Utils::processMenu(RouterFactory::get(UpdateFaction::SLUG), $player, [
 				$data[1],
-				function (string $factionName, RewardInterface $reward, $value) use ($Player) {
+				function (string $factionName, RewardInterface $reward, $value) use ($player) {
 					$reward->executeGet($factionName, $value);
-					Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_UPDATE_FACTION_SUCCESS", ['rewardName' => Utils::getText($Player->getName(), $reward->getName($Player->getName())), "factionName" => $factionName])] );
+					Utils::processMenu(
+						$this->getBackRoute(),
+						$player,
+						[Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_UPDATE_FACTION_SUCCESS", ['rewardName' => Utils::getText($player->getName(), $reward->getName($player->getName())), "factionName" => $factionName])]
+					);
 				},
-				AdminToolsMain::SLUG
+				$this->getBackRoute()
 			]);
 		};
 	}
 
-	private function mainMenu(string $message = "") : CustomForm {
+	private function getForm(string $message = "") : CustomForm {
 		$menu = new CustomForm($this->call());
 		$menu->addLabel($message);
-		$menu->addInput(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_UPDATE_FACTION_INFORMATION"), Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_UPDATE_FACTION_PLACEHOLDER"));
+		$menu->addInput(Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_UPDATE_FACTION_INFORMATION"), Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_UPDATE_FACTION_PLACEHOLDER"));
 		return $menu;
 	}
 }

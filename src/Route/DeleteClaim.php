@@ -32,95 +32,95 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 
-use jojoe77777\FormAPI\CustomForm;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\API\MainAPI;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\Database\Table\ClaimTable;
-use ShockedPlot7560\FactionMaster\Main;
+use ShockedPlot7560\FactionMaster\libs\Vecnavium\FormsUI\CustomForm;
 use ShockedPlot7560\FactionMaster\Route\Route;
+use ShockedPlot7560\FactionMaster\Route\RouteBase;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Task\DatabaseTask;
 use ShockedPlot7560\FactionMaster\Task\MenuSendTask;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
+use ShockedPlot7560\FactionMasterAdminTools\FactionMasterAdminTools;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
-class DeleteClaim implements Route {
+class DeleteClaim extends RouteBase {
 	const SLUG = "deleteClaimPanel";
-
-	public $PermissionNeed = [
-		[
-			Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-			PermissionConstant::DELETE_CLAIM_PERMISSION
-		]
-	];
-
-	/** @var UserEntity */
-	private $UserEntity;
 
 	public function getSlug(): string {
 		return self::SLUG;
 	}
 
-	public function __invoke(Player $Player, UserEntity $User, array $UserPermissions, ?array $params = null) {
-		$this->UserEntity = $User;
-		$message = '';
-		if (isset($params[0])) {
-			$message = $params[0];
-		}
+	public function getPermissions(): array {
+		return [
+			[
+				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+				PermissionConstant::DELETE_CLAIM_PERMISSION
+			]
+		];
+	}
 
-		$menu = $this->mainMenu($message);
-		$Player->sendForm($menu);
+	public function getBackRoute(): ?Route {
+		return RouterFactory::get(AdminToolsMain::SLUG);
+	}
+
+	public function __invoke(Player $player, UserEntity $userEntity, array $userPermissions, ?array $params = null) {
+		$this->init($player, $userEntity, $userPermissions, $params);
+
+		$message = $params[0] ?? "";
+		$player->sendForm($this->getForm($message));
 	}
 
 	public function call() : callable {
-		return function (Player $Player, $data) {
+		return function (Player $player, $data) {
 			if ($data === null) {
 				return;
 			}
-			$UserEntity = $this->UserEntity;
-			return Utils::processMenu(RouterFactory::get(ClaimSelect::SLUG), $Player, [
+			$userEntity = $this->getUserEntity();
+			return Utils::processMenu(RouterFactory::get(ClaimSelect::SLUG), $player, [
 				$data[1],
-				function (string $factionName, int $factionClaim) use ($Player, $UserEntity) {
-					Main::getInstance()->getServer()->getAsyncPool()->submitTask(
+				function (string $factionName, int $factionClaim) use ($player, $userEntity) {
+					FactionMasterAdminTools::getInstance()->getServer()->getAsyncPool()->submitTask(
 						new DatabaseTask(
 							"DELETE FROM " . ClaimTable::TABLE_NAME . " WHERE id = :id",
 							["id" => $factionClaim],
-							function () use ($factionClaim, $factionName, $Player, $UserEntity) {
+							function () use ($factionClaim, $factionName, $player, $userEntity) {
 								foreach (MainAPI::$claim[$factionName] as $key => $claim) {
-									if ($claim->id == $factionClaim) {
+									if ($claim->getId() == $factionClaim) {
 										unset(MainAPI::$claim[$factionName][$key]);
 									}
 								}
 								Utils::newMenuSendTask(new MenuSendTask(
 									function () use ($factionName, $factionClaim) {
 										foreach (MainAPI::getClaimsFaction($factionName) as $claim) {
-											if ($claim->id == $factionClaim) {
+											if ($claim->getId() == $factionClaim) {
 												return false;
 											}
 										}
 										return true;
 									},
-									function () use ($Player, $UserEntity) {
-										Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_SUCCESS")] );
+									function () use ($player, $userEntity) {
+										Utils::processMenu($this->getBackRoute(), $player, [Utils::getText($userEntity->getName(), "ADMIN_TOOLS_DELETE_CLAIM_SUCCESS")] );
 									},
-									function () use ($Player, $UserEntity) {
-										Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ERROR")]);
+									function () use ($player, $userEntity) {
+										Utils::processMenu($this->getBackRoute(), $player, [Utils::getText($userEntity->getName(), "ERROR")]);
 									}
 								));
 							}
 						)
 					);
 				},
-				AdminToolsMain::SLUG
+				$this->getBackRoute()
 			]);
 		};
 	}
 
-	private function mainMenu(string $message = "") : CustomForm {
+	private function getForm(string $message = "") : CustomForm {
 		$menu = new CustomForm($this->call());
-		$menu->addLabel(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_INFORMATION") . "\n" . $message);
-		$menu->addInput(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_INSTRUCTION"), Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER"));
+		$menu->addLabel($message);
+		$menu->addInput(Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_INSTRUCTION"), Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER"));
 		return $menu;
 	}
 }

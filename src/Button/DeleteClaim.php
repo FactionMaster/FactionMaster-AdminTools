@@ -32,27 +32,25 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Button;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\Button\Button;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
-use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteInvitation as RouteDeleteInvitation;
+use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteClaim as RouteDeleteClaim;
 
-class DeleteInvitation extends Button {
+class DeleteClaim extends Button {
 	public function __construct() {
-		parent::__construct(
-			"deleteInvButton",
-			function($Player) {
-				return Utils::getText($Player, "BUTTON_ADMIN_TOOLS_DELETE_INVITATION");
-			},
-			function (Player $Player) {
-				Utils::processMenu(RouterFactory::get(RouteDeleteInvitation::SLUG), $Player);
-			},
-			[[
+		$this->setSlug("deleteClaim")
+			->setContent(function($player) {
+				return Utils::getText($player, "BUTTON_ADMIN_TOOLS_DELETE_CLAIM");
+			})
+			->setCallable(function (Player $player) {
+				Utils::processMenu(RouterFactory::get(RouteDeleteClaim::SLUG), $player);
+			})
+			->setPermissions([[
 				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-				PermissionConstant::DELETE_INVITATION_PERMISSION
-			]]
-		);
+				PermissionConstant::DELETE_CLAIM_PERMISSION
+			]]);
 	}
 }

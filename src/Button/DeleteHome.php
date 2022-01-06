@@ -32,27 +32,25 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Button;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\Button\Button;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
-use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteFaction as RouteDeleteFaction;
+use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteHome as RouteDeleteHome;
 
-class DeleteFaction extends Button {
+class DeleteHome extends Button {
 	public function __construct() {
-		parent::__construct(
-			"deleteButton",
-			function($Player) {
-				return Utils::getText($Player, "BUTTON_ADMIN_TOOLS_DELETE_FACTION");
-			},
-			function (Player $Player) {
-				Utils::processMenu(RouterFactory::get(RouteDeleteFaction::SLUG), $Player);
-			},
-			[[
+		$this->setSlug("deleteHomeButton")
+			->setContent(function($player) {
+				return Utils::getText($player, "BUTTON_ADMIN_TOOLS_DELETE_HOME");
+			})
+			->setCallable(function (Player $player) {
+				Utils::processMenu(RouterFactory::get(RouteDeleteHome::SLUG), $player);
+			})
+			->setPermissions([[
 				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-				PermissionConstant::DELETE_FACTION_PERMISSION
-			]]
-		);
+				PermissionConstant::DELETE_HOME_PERMISSION
+			]]);
 	}
 }

@@ -32,27 +32,25 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Button;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\Button\Button;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
-use ShockedPlot7560\FactionMasterAdminTools\Route\UpdateFactionSelect;
+use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteFaction as RouteDeleteFaction;
 
-class UpdateFaction extends Button {
+class DeleteFaction extends Button {
 	public function __construct() {
-		parent::__construct(
-			"updateFacButton",
-			function($Player) {
-				return Utils::getText($Player, "BUTTON_ADMIN_TOOLS_UPDATE_FACTION");
-			},
-			function (Player $Player) {
-				Utils::processMenu(RouterFactory::get(UpdateFactionSelect::SLUG), $Player);
-			},
-			[[
+		$this->setSlug("deleteButton")
+			->setContent(function($player) {
+				return Utils::getText($player, "BUTTON_ADMIN_TOOLS_DELETE_FACTION");
+			})
+			->setCallable(function (Player $player) {
+				Utils::processMenu(RouterFactory::get(RouteDeleteFaction::SLUG), $player);
+			})
+			->setPermissions([[
 				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-				PermissionConstant::UPDATE_FACTION_PERMISSION
-			]]
-		);
+				PermissionConstant::DELETE_FACTION_PERMISSION
+			]]);
 	}
 }

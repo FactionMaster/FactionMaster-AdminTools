@@ -32,7 +32,7 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Button;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\Button\Button;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
@@ -41,18 +41,16 @@ use ShockedPlot7560\FactionMasterAdminTools\Route\TpHome as RouteTpHome;
 
 class TpHome extends Button {
 	public function __construct() {
-		parent::__construct(
-			"tpHomeButton",
-			function($Player) {
-				return Utils::getText($Player, "BUTTON_ADMIN_TOOLS_TP_HOME");
-			},
-			function (Player $Player) {
-				Utils::processMenu(RouterFactory::get(RouteTpHome::SLUG), $Player);
-			},
-			[[
+		$this->setSlug("tpHomeButton")
+			->setContent(function($player) {
+				return Utils::getText($player, "BUTTON_ADMIN_TOOLS_TP_HOME");
+			})
+			->setCallable(function (Player $player) {
+				Utils::processMenu(RouterFactory::get(RouteTpHome::SLUG), $player);
+			})
+			->setPermissions([[
 				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
 				PermissionConstant::TP_HOME_PERMISSION
-			]]
-		);
+			]]);
 	}
 }

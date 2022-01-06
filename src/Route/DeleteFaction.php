@@ -32,82 +32,79 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 
-use jojoe77777\FormAPI\CustomForm;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\API\MainAPI;
 use ShockedPlot7560\FactionMaster\Database\Entity\FactionEntity;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\Event\FactionDeleteEvent;
+use ShockedPlot7560\FactionMaster\libs\Vecnavium\FormsUI\CustomForm;
 use ShockedPlot7560\FactionMaster\Route\Route;
+use ShockedPlot7560\FactionMaster\Route\RouteBase;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Task\MenuSendTask;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
-class DeleteFaction implements Route {
+class DeleteFaction extends RouteBase {
 	const SLUG = "deleteFactionPanel";
-
-	public $PermissionNeed = [
-		[
-			Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-			PermissionConstant::DELETE_FACTION_PERMISSION
-		]
-	];
-
-	/** @var UserEntity */
-	private $UserEntity;
 
 	public function getSlug(): string {
 		return self::SLUG;
 	}
 
-	public function __invoke(Player $Player, UserEntity $User, array $UserPermissions, ?array $params = null) {
-		$this->UserEntity = $User;
-		$message = '';
-		if (isset($params[0])) {
-			$message = $params[0];
-		}
+	public function getPermissions(): array {
+		return [
+			[
+				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+				PermissionConstant::DELETE_FACTION_PERMISSION
+			]
+		];
+	}
 
-		$menu = $this->mainMenu($message);
-		$Player->sendForm($menu);
+	public function getBackRoute(): ?Route {
+		return RouterFactory::get(AdminToolsMain::SLUG);
+	}
+
+	public function __invoke(Player $player, UserEntity $userEntity, array $userPermissions, ?array $params = null) {
+		$this->init($player, $userEntity, $userPermissions, $params);
+		$message = $params[0] ?? "";
+		$player->sendForm($this->getForm($message));
 	}
 
 	public function call() : callable {
-		return function (Player $Player, $data) {
+		return function (Player $player, $data) {
 			if ($data === null) {
 				return;
 			}
-			$FactionRequest = MainAPI::getFaction($data[1]);
+			$targetFaction = MainAPI::getFaction($data[1]);
 			if ($data[1] !== "") {
-				if ($FactionRequest instanceof FactionEntity) {
-					MainAPI::removeFaction($FactionRequest->name);
-					$UserEntity = $this->UserEntity;
+				if ($targetFaction instanceof FactionEntity) {
+					MainAPI::removeFaction($targetFaction->getName());
 					Utils::newMenuSendTask(new MenuSendTask(
-						function () use ($FactionRequest) {
-							return !MainAPI::getFaction($FactionRequest->name) instanceof FactionEntity;
+						function () use ($targetFaction) {
+							return !MainAPI::getFaction($targetFaction->getName()) instanceof FactionEntity;
 						},
-						function () use ($Player, $FactionRequest, $UserEntity) {
-							(new FactionDeleteEvent($Player, $FactionRequest, true))->call();
-							Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player, [Utils::getText($UserEntity->name, "ADMIN_TOOLS_DELETE__FACTION_SUCCESS", ["factionName" => $FactionRequest->name])]);
+						function () use ($player, $targetFaction) {
+							(new FactionDeleteEvent($player, $targetFaction, true))->call();
+							Utils::processMenu($this->getBackRoute(), $player, [Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_DELETE__FACTION_SUCCESS", ["factionName" => $targetFaction->getName()])]);
 						},
-						function () use ($Player, $UserEntity) {
-							Utils::processMenu(RouterFactory::get(self::SLUG), $Player, [Utils::getText($UserEntity->name, "ERROR")]);
+						function () use ($player) {
+							Utils::processMenu($this, $player, [Utils::getText($this->getUserEntity()->getName(), "ERROR")]);
 						}
 					));
 				} else {
-					$menu = $this->mainMenu(Utils::getText($this->UserEntity->name, "FACTION_DONT_EXIST"));
-					$Player->sendForm($menu);
+					Utils::processMenu($this, $player, [Utils::getText($this->getUserEntity()->getName(), "FACTION_DONT_EXIST")]);
 				}
 			} else {
-				Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player);
+				Utils::processMenu($this->getBackRoute(), $player);
 			}
 		};
 	}
 
-	private function mainMenu(string $message = "") : CustomForm {
+	private function getForm(string $message = "") : CustomForm {
 		$menu = new CustomForm($this->call());
 		$menu->addLabel($message);
-		$menu->addInput(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_INSTRUCTION"), Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_DELETE__FACTION_PLACEHOLDER"));
+		$menu->addInput(Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_INSTRUCTION"), Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_DELETE__FACTION_PLACEHOLDER"));
 		return $menu;
 	}
 }

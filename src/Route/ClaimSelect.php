@@ -32,94 +32,96 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 
-use jojoe77777\FormAPI\CustomForm;
-use pocketmine\Player;
+use InvalidArgumentException;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\API\MainAPI;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
+use ShockedPlot7560\FactionMaster\libs\Vecnavium\FormsUI\CustomForm;
 use ShockedPlot7560\FactionMaster\Route\Route;
-use ShockedPlot7560\FactionMaster\Route\RouterFactory;
+use ShockedPlot7560\FactionMaster\Route\RouteBase;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 use function call_user_func;
 use function count;
 use function is_callable;
-use function is_string;
 
-class ClaimSelect implements Route {
+class ClaimSelect extends RouteBase {
 	const SLUG = "selectClaim";
 
-	public $PermissionNeed = [
-		[
-			Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-			PermissionConstant::DELETE_CLAIM_PERMISSION
-		],
-		[
-			Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-			PermissionConstant::TP_CLAIM_PERMISSION
-		]
-	];
-	public $callable;
-	public $backMenu;
 	/** @var bool */
 	private $menuActive = false;
 	private $options = [];
 	private $optionsBis = [];
-	private $factionName;
 
 	public function getSlug(): string {
 		return self::SLUG;
 	}
 
-	/**
-	 * @param array|null $params Give to first item the message to print if wanted
-	 */
-	public function __invoke(Player $player, UserEntity $User, array $UserPermissions, ?array $params = null) {
-		$this->UserEntity = $User;
-		if (isset($params[0]) && is_string($params[0])) {
-			$factionName = $params[0];
+	public function getPermissions(): array {
+		return [
+			[
+				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+				PermissionConstant::DELETE_CLAIM_PERMISSION
+			],
+			[
+				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+				PermissionConstant::TP_CLAIM_PERMISSION
+			]
+		];
+	}
+
+	public function getBackRoute(): ?Route {
+		return $this->getParams()[2];
+	}
+
+	public function getTargetFaction(): string {
+		return $this->getParams()[0] ?? "";
+	}
+
+	public function getCallable(): callable {
+		return $this->getParams()[1];
+	}
+
+	public function __invoke(Player $player, UserEntity $userEntity, array $userPermissions, ?array $params = null) {
+		$this->init($player, $userEntity, $userPermissions, $params);
+		if (count($params) < 3) {
+			throw new InvalidArgumentException("params must have a size of 3");
 		}
-		if (isset($params[1]) && is_callable($params[1])) {
-			$this->callable = $params[1];
+		if (!is_callable($params[1])) {
+			throw new InvalidArgumentException("Second parameter of params must be a callable");
 		}
-		if (isset($params[2]) && is_string($params[2])) {
-			$this->backMenu = $params[2];
+		if (!$params[2] instanceof Route) {
+			throw new InvalidArgumentException("Third parameter of params must be an instance of Route");
 		}
-		if (isset($params[0]) && $params[0] == "") {
-			return Utils::processMenu(RouterFactory::get($this->backMenu), $player);
-		}
-		$menu = $this->createSelectMenu($factionName);
-		$this->factionName = $factionName;
-		$player->sendForm($menu);
+		$player->sendForm($this->getForm());
 	}
 
 	public function call() : callable {
-		$backMenu = $this->backMenu;
-		$callable = $this->callable;
-		return function (Player $Player, $data) use ($backMenu, $callable) {
-			if ($data === null || !isset($backMenu) || !isset($callable)) {
+		return function (Player $player, $data) {
+			if ($data === null) {
 				return;
 			}
 			if (!$this->menuActive) {
-				return Utils::processMenu(RouterFactory::get($backMenu), $Player);
+				return Utils::processMenu($this->getBackRoute(), $player);
 			}
-			call_user_func($callable, $this->factionName, $this->optionsBis[$data[0]]->id);
+			call_user_func($this->getCallable(), $this->getTargetFaction(), $this->optionsBis[$data[0]]->id);
 		};
 	}
 
-	private function createSelectMenu(string $factionName): CustomForm {
+	private function getForm(): CustomForm {
 		$menu = new CustomForm($this->call());
-		$menu->setTitle(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_CLAIM_TITLE"));
+		$menu->setTitle(Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_SELECT_CLAIM_TITLE"));
 		$this->options = [];
 		$this->optionsBis = [];
-		foreach (MainAPI::getClaimsFaction($factionName) as $claim) {
+		foreach (MainAPI::getClaimsFaction($this->getTargetFaction()) as $claim) {
 			$this->optionsBis[] = $claim;
-			$this->options[] = $claim->getToString();
+			$this->options[] = $claim->toString();
 		}
 		if (count($this->options) != 0) {
-			$menu->addDropdown(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_CLAIM_INFORMATION"), $this->options);
+			$menu->addDropdown(Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_SELECT_CLAIM_INFORMATION"), $this->options);
 			$this->menuActive = true;
 		} else {
-			$menu->addLabel(Utils::getText($this->UserEntity->name, "ADMIN_TOOLS_SELECT_CLAIM_ERROR"));
+			$menu->addLabel(Utils::getText($this->getUserEntity()->getName(), "ADMIN_TOOLS_SELECT_CLAIM_ERROR"));
 		}
 		return $menu;
 	}

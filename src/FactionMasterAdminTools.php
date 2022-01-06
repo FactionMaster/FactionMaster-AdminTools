@@ -32,17 +32,17 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools;
 
-use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use ShockedPlot7560\FactionMaster\Button\Button;
 use ShockedPlot7560\FactionMaster\Button\Collection\CollectionFactory;
-use ShockedPlot7560\FactionMaster\Button\Collection\MainCollectionFac;
-use ShockedPlot7560\FactionMaster\Button\Collection\MainCollectionNoFac;
+use ShockedPlot7560\FactionMaster\Button\Collection\MainFacCollection;
+use ShockedPlot7560\FactionMaster\Button\Collection\MainNoFacCollection;
 use ShockedPlot7560\FactionMaster\Extension\Extension;
-use ShockedPlot7560\FactionMaster\Main as FactionMasterMain;
+use ShockedPlot7560\FactionMaster\libs\JackMD\ConfigUpdater\ConfigUpdater;
+use ShockedPlot7560\FactionMaster\libs\JackMD\UpdateNotifier\UpdateNotifier;
+use ShockedPlot7560\FactionMaster\Manager\ExtensionManager;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
-use ShockedPlot7560\FactionMaster\Utils\Utils;
+use ShockedPlot7560\FactionMasterAdminTools\Button\AdminToolsButton;
 use ShockedPlot7560\FactionMasterAdminTools\Button\Collection\AdminToolsMain as CollectionAdminToolsMain;
 use ShockedPlot7560\FactionMasterAdminTools\Route\AdminToolsMain;
 use ShockedPlot7560\FactionMasterAdminTools\Route\ClaimSelect;
@@ -57,15 +57,15 @@ use ShockedPlot7560\FactionMasterAdminTools\Route\UpdateFaction;
 use ShockedPlot7560\FactionMasterAdminTools\Route\UpdateFactionSelect;
 use function mkdir;
 
-class Main extends PluginBase implements Extension, PermissionConstant {
-	private $LangConfig = [];
+class FactionMasterAdminTools extends PluginBase implements Extension, PermissionConstant {
+	private $langConfig = [];
 	private static $instance;
 
 	const ADMIN_TOOLS_SLUG = "adminToolsMainButton";
 
 	public function onLoad(): void {
 		self::$instance = $this;
-		FactionMasterMain::getInstance()->getExtensionManager()->registerExtension($this);
+		ExtensionManager::registerExtension($this);
 
 		@mkdir($this->getDataFolder());
 		$this->saveDefaultConfig();
@@ -73,10 +73,17 @@ class Main extends PluginBase implements Extension, PermissionConstant {
 		$this->saveResource('en_EN.yml');
 		$this->saveResource('config.yml');
 		$this->config = new Config($this->getDataFolder() . "config.yml");
-		$this->LangConfig = [
-			"fr_FR" => new Config($this->getDataFolder() . "fr_FR.yml", Config::YAML),
-			"en_EN" => new Config($this->getDataFolder() . "en_EN.yml", Config::YAML)
+		ConfigUpdater::checkUpdate($this, $this->config, "file-version", 1);
+		ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "fr_FR.yml", Config::YAML), "file-version", 2);
+		ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "en_EN.yml", Config::YAML), "file-version", 2);
+		$this->langConfig = [
+			"FR" => new Config($this->getDataFolder() . "fr_FR.yml", Config::YAML),
+			"EN" => new Config($this->getDataFolder() . "en_EN.yml", Config::YAML)
 		];
+	}
+
+	public function onEnable(): void {
+		UpdateNotifier::checkUpdate($this->getDescription()->getName(), $this->getDescription()->getVersion());
 	}
 
 	public function execute(): void {
@@ -84,48 +91,17 @@ class Main extends PluginBase implements Extension, PermissionConstant {
 		$this->registerCollection();
 
 		foreach ([
-			CollectionFactory::get(MainCollectionFac::SLUG),
-			CollectionFactory::get(MainCollectionNoFac::SLUG)
+			CollectionFactory::get(MainFacCollection::SLUG),
+			CollectionFactory::get(MainNoFacCollection::SLUG)
 		] as $collection) {
 			$collection->registerCallable("FactionMasterAdminTools", function() use ($collection) {
-				$collection->register(new Button(
-					self::ADMIN_TOOLS_SLUG,
-					function (string $Player) {
-						return Utils::getText($Player, "BUTTON_MAIN_ADMIN_TOOLS");
-					},
-					function (Player $Player) {
-						Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $Player);
-					},[
-						[
-							Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-							self::DELETE_FACTION_PERMISSION
-						],[
-							Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-							self::DELETE_CLAIM_PERMISSION
-						],[
-							Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-							self::DELETE_HOME_PERMISSION
-						],[
-							Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-							self::DELETE_INVITATION_PERMISSION
-						],[
-							Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-							self::UPDATE_FACTION_PERMISSION
-						],[
-							Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-							self::TP_HOME_PERMISSION
-						],[
-							Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-							self::TP_CLAIM_PERMISSION
-						]
-					]
-				), 0);
+				$collection->register(new AdminToolsButton, 0);
 			});
 		}
 	}
 
 	public function getLangConfig(): array {
-		return $this->LangConfig;
+		return $this->langConfig;
 	}
 
 	public static function getInstance() : self {
@@ -137,8 +113,8 @@ class Main extends PluginBase implements Extension, PermissionConstant {
 	}
 
 	public static function getConfigF(string $key) {
-		$Config = new Config(self::getInstance()->getDataFolder() . "config.yml", Config::YAML);
-		return $Config->get($key);
+		$config = new Config(self::getInstance()->getDataFolder() . "config.yml", Config::YAML);
+		return $config->get($key);
 	}
 
 	private function registerCollection() {

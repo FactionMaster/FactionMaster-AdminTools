@@ -32,27 +32,45 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Button;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\Button\Button;
 use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
-use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
-use ShockedPlot7560\FactionMasterAdminTools\Route\DeleteClaim as RouteDeleteClaim;
+use ShockedPlot7560\FactionMasterAdminTools\FactionMasterAdminTools;
+use ShockedPlot7560\FactionMasterAdminTools\Route\AdminToolsMain;
 
-class DeleteClaim extends Button {
+class AdminToolsButton extends Button {
 	public function __construct() {
-		parent::__construct(
-			"deleteClaim",
-			function($Player) {
-				return Utils::getText($Player, "BUTTON_ADMIN_TOOLS_DELETE_CLAIM");
-			},
-			function (Player $Player) {
-				Utils::processMenu(RouterFactory::get(RouteDeleteClaim::SLUG), $Player);
-			},
-			[[
-				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-				PermissionConstant::DELETE_CLAIM_PERMISSION
-			]]
-		);
+		$this->setSlug(FactionMasterAdminTools::ADMIN_TOOLS_SLUG)
+			->setContent(function($player) {
+				return Utils::getText($player, "BUTTON_MAIN_ADMIN_TOOLS");
+			})
+			->setCallable(function (Player $player) {
+				Utils::processMenu(RouterFactory::get(AdminToolsMain::SLUG), $player);
+			})
+			->setPermissions([
+				[
+					Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+					FactionMasterAdminTools::DELETE_FACTION_PERMISSION
+				],[
+					Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+					FactionMasterAdminTools::DELETE_CLAIM_PERMISSION
+				],[
+					Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+					FactionMasterAdminTools::DELETE_HOME_PERMISSION
+				],[
+					Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+					FactionMasterAdminTools::DELETE_INVITATION_PERMISSION
+				],[
+					Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+					FactionMasterAdminTools::UPDATE_FACTION_PERMISSION
+				],[
+					Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+					FactionMasterAdminTools::TP_HOME_PERMISSION
+				],[
+					Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+					FactionMasterAdminTools::TP_CLAIM_PERMISSION
+				]
+			]);
 	}
 }

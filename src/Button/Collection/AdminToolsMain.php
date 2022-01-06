@@ -32,11 +32,11 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Button\Collection;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\Button\Back;
 use ShockedPlot7560\FactionMaster\Button\Collection\Collection;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
-use ShockedPlot7560\FactionMaster\Route\MainPanel;
+use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMasterAdminTools\Button\DeleteClaim;
 use ShockedPlot7560\FactionMasterAdminTools\Button\DeleteFaction;
 use ShockedPlot7560\FactionMasterAdminTools\Button\DeleteHome;
@@ -58,7 +58,7 @@ class AdminToolsMain extends Collection {
 			$this->register(new DeleteClaim());
 			$this->register(new TpClaim());
 			$this->register(new UpdateFaction());
-			$this->register(new Back(MainPanel::SLUG));
+			$this->register(new Back(RouterFactory::get(AdminToolsMain::SLUG)->getBackRoute()));
 		});
 	}
 }

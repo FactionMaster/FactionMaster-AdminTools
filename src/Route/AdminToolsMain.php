@@ -32,29 +32,21 @@
 
 namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 
-use jojoe77777\FormAPI\SimpleForm;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ShockedPlot7560\FactionMaster\Button\Collection\Collection;
 use ShockedPlot7560\FactionMaster\Button\Collection\CollectionFactory;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
+use ShockedPlot7560\FactionMaster\libs\Vecnavium\FormsUI\SimpleForm;
+use ShockedPlot7560\FactionMaster\Route\MainRoute;
 use ShockedPlot7560\FactionMaster\Route\Route;
+use ShockedPlot7560\FactionMaster\Route\RouteBase;
+use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\Button\Collection\AdminToolsMain as CollectionAdminToolsMain;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
-class AdminToolsMain implements Route {
+class AdminToolsMain extends RouteBase {
 	const SLUG = "adminToolsMain";
-
-	public $PermissionNeed = [
-		[
-			Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-			PermissionConstant::DELETE_FACTION_PERMISSION
-		],
-		[
-			Utils::POCKETMINE_PERMISSIONS_CONSTANT,
-			PermissionConstant::DELETE_INVITATION_PERMISSION
-		]
-	];
 
 	/** @var UserEntity */
 	private $UserEntity;
@@ -65,32 +57,44 @@ class AdminToolsMain implements Route {
 		return self::SLUG;
 	}
 
-	public function __invoke(Player $Player, UserEntity $User, array $UserPermissions, ?array $params = null) {
-		$this->UserEntity = $User;
-		$message = '';
-		if (isset($params[0])) {
-			$message = $params[0];
-		}
+	public function getPermissions(): array {
+		return [
+			[
+				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+				PermissionConstant::DELETE_FACTION_PERMISSION
+			],
+			[
+				Utils::POCKETMINE_PERMISSIONS_CONSTANT,
+				PermissionConstant::DELETE_INVITATION_PERMISSION
+			]
+		];
+	}
 
-		$this->Collection = CollectionFactory::get(CollectionAdminToolsMain::SLUG)->init($Player, $User);
-		$menu = $this->mainMenu($message);
-		$Player->sendForm($menu);
+	public function getBackRoute(): ?Route {
+		return RouterFactory::get(MainRoute::SLUG);
+	}
+
+	public function __invoke(Player $player, UserEntity $userEntity, array $userPermissions, ?array $params = null) {
+		$this->init($player, $userEntity, $userPermissions, $params);
+		$this->setCollection(CollectionFactory::get(CollectionAdminToolsMain::SLUG)->init($player, $this->getUserEntity()));
+
+		$message = $params[0] ?? "";
+		$player->sendForm($this->getForm($message));
 	}
 
 	public function call() : callable {
-		$Collection = $this->Collection;
-		return function (Player $Player, $data) use ($Collection) {
+		return function (Player $player, $data) {
 			if ($data === null) {
 				return;
 			}
-			$Collection->process($data, $Player);
+			$this->getCollection()->process($data, $player);
 		};
 	}
 
-	private function mainMenu(string $message = "") : SimpleForm {
+	private function getForm(string $message = "") : SimpleForm {
 		$menu = new SimpleForm($this->call());
-		$menu = $this->Collection->generateButtons($menu, $this->UserEntity->name);
-		$menu->setTitle(Utils::getText($this->UserEntity->name, "MAIN_ADMIN_TOOLS_PANEL_TITLE"));
+		$menu = $this->getCollection()->generateButtons($menu, $this->getUserEntity()->getName());
+		$menu->setTitle(Utils::getText($this->getUserEntity()->getName(), "MAIN_ADMIN_TOOLS_PANEL_TITLE"));
 		if ($message !== "") {
 			$menu->setContent($message);
 		}
