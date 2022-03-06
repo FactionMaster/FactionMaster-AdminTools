@@ -76,7 +76,7 @@ class TpHome extends RouteBase {
 			if ($data === null) {
 				return;
 			}
-			return Utils::processMenu(RouterFactory::get(HomeSelect::SLUG), $player, [
+			Utils::processMenu(RouterFactory::get(HomeSelect::SLUG), $player, [
 				$data[1],
 				function (string $factionName, string $homeName) use ($player) {
 					$home = MainAPI::getFactionHome($factionName, $homeName);

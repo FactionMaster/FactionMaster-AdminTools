@@ -73,7 +73,7 @@ class UpdateFactionSelect extends RouteBase {
 			if ($data === null) {
 				return;
 			}
-			return Utils::processMenu(RouterFactory::get(UpdateFaction::SLUG), $player, [
+			Utils::processMenu(RouterFactory::get(UpdateFaction::SLUG), $player, [
 				$data[1],
 				function (string $factionName, RewardInterface $reward, $value) use ($player) {
 					$reward->executeGet($factionName, $value);

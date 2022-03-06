@@ -102,7 +102,8 @@ class ClaimSelect extends RouteBase {
 				return;
 			}
 			if (!$this->menuActive) {
-				return Utils::processMenu($this->getBackRoute(), $player);
+				Utils::processMenu($this->getBackRoute(), $player);
+				return;
 			}
 			call_user_func($this->getCallable(), $this->getTargetFaction(), $this->optionsBis[$data[0]]->id);
 		};

@@ -79,7 +79,7 @@ class DeleteClaim extends RouteBase {
 				return;
 			}
 			$userEntity = $this->getUserEntity();
-			return Utils::processMenu(RouterFactory::get(ClaimSelect::SLUG), $player, [
+			Utils::processMenu(RouterFactory::get(ClaimSelect::SLUG), $player, [
 				$data[1],
 				function (string $factionName, int $factionClaim) use ($player, $userEntity) {
 					FactionMasterAdminTools::getInstance()->getServer()->getAsyncPool()->submitTask(

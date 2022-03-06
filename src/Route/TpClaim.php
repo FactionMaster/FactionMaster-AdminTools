@@ -76,7 +76,7 @@ class TpClaim extends RouteBase {
 			if ($data === null) {
 				return;
 			}
-			return Utils::processMenu(RouterFactory::get(ClaimSelect::SLUG), $player, [
+			Utils::processMenu(RouterFactory::get(ClaimSelect::SLUG), $player, [
 				$data[1],
 				function (string $factionName, int $factionClaim) use ($player) {
 					$targetClaim = null;

@@ -44,6 +44,7 @@ use ShockedPlot7560\FactionMaster\Route\RouterFactory;
 use ShockedPlot7560\FactionMaster\Task\MenuSendTask;
 use ShockedPlot7560\FactionMaster\Utils\Utils;
 use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
+use function count;
 
 class DeleteInvitation extends RouteBase {
 	const SLUG = "deleteInvitationPanel";
@@ -86,9 +87,10 @@ class DeleteInvitation extends RouteBase {
 				if (isset($invitation[0]) && $invitation[0] instanceof InvitationEntity) {
 					$invitation = $invitation[0];
 					MainAPI::removeInvitation($invitation->getSenderString(), $invitation->getReceiverString(), $invitation->getType());
+					$count = count(MainAPI::getInvitationsBySender($invitation->getSenderString(), $invitation->getType()));
 					Utils::newMenuSendTask(new MenuSendTask(
-						function () use ($invitation) {
-							return !MainAPI::getInvitationsBySender($invitation->getSenderString(), $invitation->getType()) instanceof InvitationEntity;
+						function () use ($invitation, $count) {
+							return count(MainAPI::getInvitationsBySender($invitation->getSenderString(), $invitation->getType())) === $count - 1;
 						},
 						function () use ($player, $invitation) {
 							(new InvitationDeleteEvent($player, $invitation, true))->call();

@@ -94,10 +94,12 @@ class UpdateFaction extends RouteBase {
 			throw new InvalidArgumentException("Third parameter of params must be an instance of Route");
 		}
 		if ($this->getTargetFaction() === "") {
-			return Utils::processMenu($this->getBackRoute(), $player);
+			Utils::processMenu($this->getBackRoute(), $player);
+			return;
 		}
 		if (!MainAPI::getFaction($this->getTargetFaction()) instanceof FactionEntity) {
-			return Utils::processMenu($this->getBackRoute(), $player, [Utils::getText($player->getName(), "FACTION_DONT_EXIST")]);
+			Utils::processMenu($this->getBackRoute(), $player, [Utils::getText($player->getName(), "FACTION_DONT_EXIST")]);
+			return;
 		}
 		$player->sendForm($this->getForm());
 	}

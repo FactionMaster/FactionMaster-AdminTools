@@ -72,8 +72,8 @@ class FactionMasterAdminTools extends PluginBase implements Extension, Permissio
 		$this->saveResource('fr_FR.yml');
 		$this->saveResource('en_EN.yml');
 		$this->saveResource('config.yml');
-		$this->config = new Config($this->getDataFolder() . "config.yml");
-		ConfigUpdater::checkUpdate($this, $this->config, "file-version", 1);
+		$this->reloadConfig();
+		ConfigUpdater::checkUpdate($this, $this->getConfig(), "file-version", 1);
 		ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "fr_FR.yml", Config::YAML), "file-version", 2);
 		ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "en_EN.yml", Config::YAML), "file-version", 2);
 		$this->langConfig = [

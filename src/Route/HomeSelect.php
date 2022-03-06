@@ -101,10 +101,12 @@ class HomeSelect  extends RouteBase {
 			throw new InvalidArgumentException("Third parameter of params must be an instance of Route");
 		}
 		if ($this->getTargetFaction() === "") {
-			return Utils::processMenu($this->getBackRoute(), $player);
+			Utils::processMenu($this->getBackRoute(), $player);
+			return;
 		}
 		if (isset($params[0]) && $params[0] == "") {
-			return Utils::processMenu($this->getBackRoute(), $player);
+			Utils::processMenu($this->getBackRoute(), $player);
+			return;
 		}
 		$player->sendForm($this->getForm());
 	}
@@ -115,7 +117,8 @@ class HomeSelect  extends RouteBase {
 				return;
 			}
 			if (!$this->isMenuActive() || $data[0] === "") {
-				return Utils::processMenu($this->getBackRoute(), $player);
+				Utils::processMenu($this->getBackRoute(), $player);
+				return;
 			}
 			call_user_func($this->getCallable(), $this->getTargetFaction(), $this->optionsBis[$data[0]]);
 		};

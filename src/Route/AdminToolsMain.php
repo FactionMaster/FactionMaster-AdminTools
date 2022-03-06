@@ -33,7 +33,6 @@
 namespace ShockedPlot7560\FactionMasterAdminTools\Route;
 
 use pocketmine\player\Player;
-use ShockedPlot7560\FactionMaster\Button\Collection\Collection;
 use ShockedPlot7560\FactionMaster\Button\Collection\CollectionFactory;
 use ShockedPlot7560\FactionMaster\Database\Entity\UserEntity;
 use ShockedPlot7560\FactionMaster\libs\Vecnavium\FormsUI\SimpleForm;
@@ -46,11 +45,6 @@ use ShockedPlot7560\FactionMasterAdminTools\PermissionConstant;
 
 class AdminToolsMain extends RouteBase {
 	const SLUG = "adminToolsMain";
-
-	/** @var UserEntity */
-	private $UserEntity;
-	/** @var Collection */
-	private $Collection;
 
 	public function getSlug(): string {
 		return self::SLUG;
