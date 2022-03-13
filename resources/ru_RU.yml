@@ -1,0 +1,55 @@
+# НЕ ТРОГАТЬ
+file-version: 1
+# НЕ ТРОГАТЬ
+
+MAIN_ADMIN_TOOLS_PANEL_TITLE: "Админ меню"
+
+BUTTON_MAIN_ADMIN_TOOLS: "Админ меню"
+BUTTON_ADMIN_TOOLS_DELETE_FACTION: "Удалить фракцию"
+BUTTON_ADMIN_TOOLS_DELETE_INVITATION: "Удалить приглашение"
+BUTTON_ADMIN_TOOLS_DELETE_HOME: "Удалить точку дома"
+BUTTON_ADMIN_TOOLS_TP_HOME: "Тп к точке дома"
+BUTTON_ADMIN_TOOLS_TP_CLAIM: "Тп на территорию"
+BUTTON_ADMIN_TOOLS_DELETE_CLAIM: "Удалить территорию
+BUTTON_ADMIN_TOOLS_UPDATE_FACTION: "Предложить вознаграждение"
+
+ADMIN_TOOLS_INSTRUCTION: "Введите требуемое значение, введите пустое поле, чтобы вернуться назад"
+
+ADMIN_TOOLS_DELETE__FACTION_PLACEHOLDER: "Удалить фракцию"
+ADMIN_TOOLS_DELETE__FACTION_SUCCESS: " §a>> §2{{factionName}} фракция была насильственно удалена"
+
+ADMIN_TOOLS_DELETE_INVITATION_INFORMATION: "Пожалуйста, введите ник или название фракции, отправившей приглашение"
+ADMIN_TOOLS_DELETE_INVITATION_PLACEHOLDER: "Никнейм или название фракции"
+ADMIN_TOOLS_DELETE_INVITATION_SUCCESS: " §a>> §2Приглашение, отправленное от {{targetName}} было принудительно удалено"
+ADMIN_TOOLS_DELETE_INVITATION_MEMBER: "Приглашение участника"
+ADMIN_TOOLS_DELETE_INVITATION_ALLIANCE: "Приглашение союза"
+INVITATION_DONT_EXIST: " §c>> §4Ни одно приглашение не соответствует этому полю"
+
+ADMIN_TOOLS_DELETE_HOME_PLACEHOLDER: "Название фракции"
+ADMIN_TOOLS_DELETE_HOME_SUCCESS: " §a>> §2{{homeName}} точка дома фракции {{factionName}} была удалена"
+
+ADMIN_TOOLS_SELECT_HOME_TITLE: "Выбор точки дома"
+ADMIN_TOOLS_SELECT_HOME_INFORMATION: "Choose the home from the drop-down list"
+ADMIN_TOOLS_SELECT_HOME_ERROR: " §c>> §4No home has been defined by this faction, send to return to the main menu"
+
+ADMIN_TOOLS_TP_HOME_PLACEHOLDER: "Название фракции"
+ADMIN_TOOLS_TP_HOME_SUCCESS: " §a>> §2Телепорт на {{homeName}} фракции {{factionName}} успешно !"
+
+ADMIN_TOOLS_UPDATE_FACTION_PLACEHOLDER: "Название фракции"
+ADMIN_TOOLS_UPDATE_FACTION_TITLE: "Выбор награды"
+ADMIN_TOOLS_UPDATE_FACTION_INPUT_TITLE: "Значение : "
+ADMIN_TOOLS_UPDATE_FACTION_INPUT_PLACEHOLDER: "Значение"
+ADMIN_TOOLS_UPDATE_FACTION_INFORMATION: "Пожалуйста, выберите предлагаемую награду из выпадающего списка"
+ADMIN_TOOLS_UPDATE_FACTION_SUCCESS: " §a>> §2Награда '{{rewardName}}' была предложена фракции {{factionName}}"
+
+ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER: "Название фракции"
+ADMIN_TOOLS_DELETE_CLAIM_SUCCESS: " §a>> §2Территория была удалена"
+
+ADMIN_TOOLS_SELECT_CLAIM_TITLE: "Выбор территории"
+ADMIN_TOOLS_SELECT_CLAIM_INFORMATION: "Пожалуйста, выберите территорию, подлежащую удалению"
+ADMIN_TOOLS_SELECT_CLAIM_ERROR: " §c>> §4Для введенной фракции не найдено территорий, проверьте написание фракции, или у нее нет территорий§r"
+
+ADMIN_TOOLS_TP_CLAIM_PLACEHOLDER: "Название фракции"
+ADMIN_TOOLS_TP_CLAIM_SUCCESS: " §a>> §2Телепортация на территорию фракции {{factionName}} успешно!"
+
+ADMIN_TOOLS_ERROR_LEVEL_NO_EXISTS: " §c>> §4Этого уровня не существует"
