@@ -10,7 +10,7 @@ BUTTON_ADMIN_TOOLS_DELETE_INVITATION: "Удалить приглашение"
 BUTTON_ADMIN_TOOLS_DELETE_HOME: "Удалить точку дома"
 BUTTON_ADMIN_TOOLS_TP_HOME: "Тп к точке дома"
 BUTTON_ADMIN_TOOLS_TP_CLAIM: "Тп на территорию"
-BUTTON_ADMIN_TOOLS_DELETE_CLAIM: "Удалить территорию
+BUTTON_ADMIN_TOOLS_DELETE_CLAIM: "Удалить территорию"
 BUTTON_ADMIN_TOOLS_UPDATE_FACTION: "Предложить вознаграждение"
 
 ADMIN_TOOLS_INSTRUCTION: "Введите требуемое значение, введите пустое поле, чтобы вернуться назад"
