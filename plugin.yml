@@ -1,6 +1,6 @@
 name: FactionMasterAdminTools
 author: ShockedPlot7560
-version: 2.0.1
+version: 2.0.2
 api: 4.0.0
 main: ShockedPlot7560\FactionMasterAdminTools\FactionMasterAdminTools
 src-namespace-prefix: ShockedPlot7560\FactionMasterAdminTools
