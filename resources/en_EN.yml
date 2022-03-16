@@ -50,6 +50,6 @@ ADMIN_TOOLS_SELECT_CLAIM_INFORMATION: "Please select the claim to be deleted"
 ADMIN_TOOLS_SELECT_CLAIM_ERROR: " §c>> §4No claim has been found for the faction entered, check the spelling of the faction or it has no claims§r"
 
 ADMIN_TOOLS_TP_CLAIM_PLACEHOLDER: "Name of the faction"
-ADMIN_TOOLS_TP_CLAIM_SUCCESS: " §a>> §2Teleport to the claaim of the faction {{factionName}} with success !"
+ADMIN_TOOLS_TP_CLAIM_SUCCESS: " §a>> §2Teleport to the claim of the faction {{factionName}} with success !"
 
 ADMIN_TOOLS_ERROR_LEVEL_NO_EXISTS: " §c>> §4This level doesn't exist"
