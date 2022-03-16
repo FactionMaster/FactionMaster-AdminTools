@@ -71,19 +71,20 @@ class FactionMasterAdminTools extends PluginBase implements Extension, Permissio
 		$this->saveDefaultConfig();
 		$this->saveResource('fr_FR.yml');
 		$this->saveResource('en_EN.yml');
-                $this->saveResource('es_ES.yml');
 		$this->saveResource('ru_RU.yml');
+                $this->saveResource('es_SPA.yml');
 		$this->saveResource('config.yml');
 		$this->reloadConfig();
 		ConfigUpdater::checkUpdate($this, $this->getConfig(), "file-version", 1);
 		ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "fr_FR.yml", Config::YAML), "file-version", 2);
 		ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "en_EN.yml", Config::YAML), "file-version", 2);
-                ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "es_ES.yml", Config::YAML), "file-version", 1);
 		ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "ru_RU.yml", Config::YAML), "file-version", 1);
+                ConfigUpdater::checkUpdate($this, new Config($this->getDataFolder() . "es_SPA.yml", Config::YAML), "file-version", 1);
 		$this->langConfig = [
 			"FR" => new Config($this->getDataFolder() . "fr_FR.yml", Config::YAML),
 			"EN" => new Config($this->getDataFolder() . "en_EN.yml", Config::YAML),
-			"RU" => new Config($this->getDataFolder() . "ru_RU.yml", Config::YAML)
+			"RU" => new Config($this->getDataFolder() . "ru_RU.yml", Config::YAML),
+			"SPA" => new Config($this->getDataFolder() . "es_SPA.yml", Config::YAML)
 		];
 	}
 
