@@ -1,0 +1,55 @@
+# DO NOT EDIT THIS LINE
+file-version: 1
+# DO NOT EDIT THIS LINE
+
+MAIN_ADMIN_TOOLS_PANEL_TITLE: "Menú de administración"
+
+BUTTON_MAIN_ADMIN_TOOLS: "Menú de administración"
+BUTTON_ADMIN_TOOLS_DELETE_FACTION: "Eliminar una facción"
+BUTTON_ADMIN_TOOLS_DELETE_INVITATION: "Eliminar una invitación"
+BUTTON_ADMIN_TOOLS_DELETE_HOME: "Eliminar una casa"
+BUTTON_ADMIN_TOOLS_TP_HOME: "Hacerse tp a una casa"
+BUTTON_ADMIN_TOOLS_TP_CLAIM: "Hacerse tp a una territorio"
+BUTTON_ADMIN_TOOLS_DELETE_CLAIM: "Eliminar un territorio"
+BUTTON_ADMIN_TOOLS_UPDATE_FACTION: "Ofrecer una recompensa"
+
+ADMIN_TOOLS_INSTRUCTION: "Introduzca el valor solicitado, introduzca un campo vacío para volver atrás"
+
+ADMIN_TOOLS_DELETE__FACTION_PLACEHOLDER: "Facción a eliminar"
+ADMIN_TOOLS_DELETE__FACTION_SUCCESS: " §a>> §2La facción {{factionName}} ha sido eliminada a la fuerza"
+
+ADMIN_TOOLS_DELETE_INVITATION_INFORMATION: "Por favor, introduzca el apodo o el nombre de la facción que envió la invitación"
+ADMIN_TOOLS_DELETE_INVITATION_PLACEHOLDER: "Apodo o nombre de la facción"
+ADMIN_TOOLS_DELETE_INVITATION_SUCCESS: " §a>> §2La invitación enviada por {{targetName}} ha sido eliminada a la fuerza"
+ADMIN_TOOLS_DELETE_INVITATION_MEMBER: "Invitación de los miembros"
+ADMIN_TOOLS_DELETE_INVITATION_ALLIANCE: "Invitación de la Alianza"
+INVITATION_DONT_EXIST: " §c>> §4Ninguna invitación coincide con este campo"
+
+ADMIN_TOOLS_DELETE_HOME_PLACEHOLDER: "Nombre de la facción"
+ADMIN_TOOLS_DELETE_HOME_SUCCESS: " §a>> §2La casa {{homeName}} de la facción {{factionName}} ha sido eliminada"
+
+ADMIN_TOOLS_SELECT_HOME_TITLE: "Selección de casas"
+ADMIN_TOOLS_SELECT_HOME_INFORMATION: "Elija la casa en la lista desplegable"
+ADMIN_TOOLS_SELECT_HOME_ERROR: " §c>> §4Esta facción no ha definido ninguna casa, dale a enviar para volver al menú principal"
+
+ADMIN_TOOLS_TP_HOME_PLACEHOLDER: "Nombre de la facción"
+ADMIN_TOOLS_TP_HOME_SUCCESS: " §a>> §2El teletransporte a {{homeName}} de la facción {{factionName}} se ha realizado con éxito!"
+
+ADMIN_TOOLS_UPDATE_FACTION_PLACEHOLDER: "Nombre de la facción"
+ADMIN_TOOLS_UPDATE_FACTION_TITLE: "Selección del premio"
+ADMIN_TOOLS_UPDATE_FACTION_INPUT_TITLE: "Valor : "
+ADMIN_TOOLS_UPDATE_FACTION_INPUT_PLACEHOLDER: "Valor"
+ADMIN_TOOLS_UPDATE_FACTION_INFORMATION: "Elija la recompensa que desea ofrecer en la lista desplegable"
+ADMIN_TOOLS_UPDATE_FACTION_SUCCESS: " §a>> §2La recompensa '{{rewardName}}' ha sido ofrecido a la facción {{factionName}}"
+
+ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER: "Nombre de la facción"
+ADMIN_TOOLS_DELETE_CLAIM_SUCCESS: " §a>> §2El territorio se ha eliminado"
+
+ADMIN_TOOLS_SELECT_CLAIM_TITLE: "Selección de territorios"
+ADMIN_TOOLS_SELECT_CLAIM_INFORMATION: "Seleccione el territorio que desea eliminar"
+ADMIN_TOOLS_SELECT_CLAIM_ERROR: " §c>> §4No se ha encontrado ninguna territorio de la facción introducida, compruebe la ortografía de la facción o no tiene reclamaciones§r"
+
+ADMIN_TOOLS_TP_CLAIM_PLACEHOLDER: "Nombre de la facción"
+ADMIN_TOOLS_TP_CLAIM_SUCCESS: " §a>> §2El teletransporte a el territorio de la facción {{factionName}} se ha realizado con éxito!"
+
+ADMIN_TOOLS_ERROR_LEVEL_NO_EXISTS: " §c>> §4Este nivel no existe"
