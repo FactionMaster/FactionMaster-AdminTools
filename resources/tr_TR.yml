@@ -1,0 +1,55 @@
+# DO NOT EDIT THIS LINE
+file-version: 1
+# DO NOT EDIT THIS LINE
+
+MAIN_ADMIN_TOOLS_PANEL_TITLE: "Admin menü"
+
+BUTTON_MAIN_ADMIN_TOOLS: "Admin menü"
+BUTTON_ADMIN_TOOLS_DELETE_FACTION: "Klanı kaldır"
+BUTTON_ADMIN_TOOLS_DELETE_INVITATION: "Davetiyeyi kaldır"
+BUTTON_ADMIN_TOOLS_DELETE_HOME: "Evi kaldır"
+BUTTON_ADMIN_TOOLS_TP_HOME: "Eve ışınlan"
+BUTTON_ADMIN_TOOLS_TP_CLAIM: "Araziye ışınlan"
+BUTTON_ADMIN_TOOLS_DELETE_CLAIM: "Araziyi kaldır"
+BUTTON_ADMIN_TOOLS_UPDATE_FACTION: "Ödül teklif et"
+
+ADMIN_TOOLS_INSTRUCTION: "İstenen değeri girin, geri dönmek için boş bir değer girin"
+
+ADMIN_TOOLS_DELETE__FACTION_PLACEHOLDER: "Silinicek klan"
+ADMIN_TOOLS_DELETE__FACTION_SUCCESS: " §a>> §2The {{factionName}} klanı zorla kaldırıldı"
+
+ADMIN_TOOLS_DELETE_INVITATION_INFORMATION: "Lütfen davetiyeyi gönderen klanın takma adını veya adını girin"
+ADMIN_TOOLS_DELETE_INVITATION_PLACEHOLDER: "Takma ad ya da Klan adı"
+ADMIN_TOOLS_DELETE_INVITATION_SUCCESS: " §a>> §2{{targetName}} tarafından gönderilen davetiye zorla silindi"
+ADMIN_TOOLS_DELETE_INVITATION_MEMBER: "Üye davetiyesi"
+ADMIN_TOOLS_DELETE_INVITATION_ALLIANCE: "Müttefik davetiyesi"
+INVITATION_DONT_EXIST: " §c>> §4Böyle bir davetiye bulunamadı"
+
+ADMIN_TOOLS_DELETE_HOME_PLACEHOLDER: "Klanın adı"
+ADMIN_TOOLS_DELETE_HOME_SUCCESS: " §a>> §2{{factionName}} klanın {{homeName}} evi silindi"
+
+ADMIN_TOOLS_SELECT_HOME_TITLE: "Ev seçimi"
+ADMIN_TOOLS_SELECT_HOME_INFORMATION: "Açılır listeden evi seçin"
+ADMIN_TOOLS_SELECT_HOME_ERROR: " §c>> §4Bu klan tarafından hiçbir ev tanımlanmadı, ana menüye dönmek için gönder"
+
+ADMIN_TOOLS_TP_HOME_PLACEHOLDER: "Klanın adı"
+ADMIN_TOOLS_TP_HOME_SUCCESS: " §a>> §2Başarıyla {{factionName}} klanının {{homeName}} evine ışınlandın!"
+
+ADMIN_TOOLS_UPDATE_FACTION_PLACEHOLDER: "Klanın adı"
+ADMIN_TOOLS_UPDATE_FACTION_TITLE: "Ödülü seçin"
+ADMIN_TOOLS_UPDATE_FACTION_INPUT_TITLE: "Değer: "
+ADMIN_TOOLS_UPDATE_FACTION_INPUT_PLACEHOLDER: "Değer"
+ADMIN_TOOLS_UPDATE_FACTION_INFORMATION: "Lütfen açılır listeden sunulacak ödülü seçin"
+ADMIN_TOOLS_UPDATE_FACTION_SUCCESS: " §a>> §2'{{rewardName}}' ödülü {{factionName}} klanına sunuldu"
+
+ADMIN_TOOLS_DELETE_CLAIM_PLACEHOLDER: "Klanın adı"
+ADMIN_TOOLS_DELETE_CLAIM_SUCCESS: " §a>> §2Arazi silindi"
+
+ADMIN_TOOLS_SELECT_CLAIM_TITLE: "Arazi seçimi"
+ADMIN_TOOLS_SELECT_CLAIM_INFORMATION: "Lütfen silinecek araziyi seçin"
+ADMIN_TOOLS_SELECT_CLAIM_ERROR: " §c>> §4Girilen klan için herhangi bir arazi bulunamadı, klanın adını kontrol edin veya herhangi bir arazisi olmadığını kabullenin§r"
+
+ADMIN_TOOLS_TP_CLAIM_PLACEHOLDER: "Klanın adı"
+ADMIN_TOOLS_TP_CLAIM_SUCCESS: " §a>> §2{{factionName}} klanının arazisine başarıyla ışınlandın!"
+
+ADMIN_TOOLS_ERROR_LEVEL_NO_EXISTS: " §c>> §4Arazi mevcut değil"
